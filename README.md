@@ -1,10 +1,12 @@
-# Android Local Agent
+# T3 Code on Android as an Agent
 
 [English](README.en.md)
 
-用系统自带 Linux Terminal、T3 Code、Codex CLI 和 Google 官方 Android CLI / SKILL，在手机内运行 Agent 并连接回同一部手机。无需专用 Agent App、Android Root 或自写 SKILL，沿用 CLI 支持的订阅登录。程序和工具运行在手机内，模型推理调用云端服务。
+在 Android 系统自带的 Linux Terminal（Debian ARM64 虚拟机）中部署并运行 T3 Code，从同一部手机的浏览器访问，通过 T3 接入的 CLI 使用 Agent 功能和订阅登录。无需 Android Root 或专用适配 App。T3 和 CLI 运行在手机内，模型推理调用云端服务。
 
-本仓库只补上同机无线 ADB 连接与两个手机回环入口：`3773` 用于 T3，`1455` 用于 Codex 浏览器登录回调。实测 Terminal 原生端口发现曾失效，因此由一个用户服务维护连接和转发。
+本仓库提供手机端 T3 Code 的部署步骤、同机无线 ADB 连接与两个手机回环入口：`3773` 用于 T3，`1455` 用于 Codex 浏览器登录回调。实测 Terminal 原生端口发现曾失效，因此由一个用户服务维护连接和转发。
+
+部署示例使用已实测的 Codex CLI；文中还包含 Google 官方 Android CLI / SKILL 的配置，用于让 T3 中的 Agent 读取和操作同一部手机的界面。
 
 ## 安装
 
@@ -86,12 +88,12 @@ bash scripts/uninstall.sh
 
 ## 实践依据
 
-原始部署使用 Pixel 9a、GrapheneOS `2026102100` / Android 17、Debian 13 ARM64，以及 T3 `0.1.2`、Codex `0.164.0`、Android CLI `1.1.16717390`。已完成 Codex 登录、T3 浏览器配对、同机 ADB 和 Android CLI 截图；重启 VM 后服务恢复，手机 T3 入口返回 HTTP 200。用户后续实测已能通过该方案操控手机完成大部分任务。
+原始部署使用 Pixel 9a、GrapheneOS `2026102100` / Android 17、Debian 13 ARM64，以及 T3 `0.1.2`、Codex `0.164.0`、Android CLI `1.1.16717390`。已完成 Codex 登录、T3 浏览器配对、同机 ADB 和 Android CLI 截图；重启 VM 后服务恢复，手机 T3 入口返回 HTTP 200。用户后续实测已能通过 T3 配合 Android CLI 操控手机完成大部分任务。
 
 ## 局限性
 
 - 实测范围限于上述设备、系统和 Codex；其他设备、ROM、Claude Code / OpenCode 等需分别验证。
-- 当前主要问题集中在 Terminal 在后台被系统终止，影响 Agent 持续运行。锁屏、长期后台和换网恢复的稳定性仍需进一步验证。
+- 当前主要问题集中在 Terminal 在后台被系统终止，影响 T3 和 CLI 持续运行。锁屏、长期后台和换网恢复的稳定性仍需进一步验证。
 - 本仓库精简安装器尚未在全新手机 VM 中实装验收；本地自动检查和远端 CI 均不能替代真机验收。
 - 服务随 VM 运行，不能在 VM 停止后继续执行。无线调试连接端口变化后需手动 `connect`。
 - Terminal 的 Port control 不应同时开启 `3773` / `1455`；本方案依赖 adbd 支持回环监听。其他版本需核对手机监听地址。
@@ -109,4 +111,4 @@ python3 scripts/check_public.py
 python3 scripts/package.py
 ```
 
-打包生成 `dist/android-local-agent-v0.1.0.zip` 与 SHA-256 清单，只含源码。自有代码与文档采用 [MIT](LICENSE)；第三方工具和官方技能从上游安装，适用各自许可与服务条款。
+打包生成 `dist/t3-code-on-android-as-an-agent-v0.1.0.zip` 与 SHA-256 清单，只含源码。自有代码与文档采用 [MIT](LICENSE)；第三方工具和官方技能从上游安装，适用各自许可与服务条款。

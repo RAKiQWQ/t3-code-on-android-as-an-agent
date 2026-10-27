@@ -1,5 +1,5 @@
 [Unit]
-Description=Android Local Agent phone-local ADB transport
+Description=T3 Code on Android as an Agent phone-local ADB transport
 
 [Service]
 Type=simple

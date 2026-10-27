@@ -1,10 +1,12 @@
-# Android Local Agent
+# T3 Code on Android as an Agent
 
 [中文](README.md)
 
-Run an agent inside a phone and connect it back to that same phone using the system Linux Terminal, T3 Code, Codex CLI, and Google's official Android CLI / SKILL. No dedicated agent app, Android root, or custom skill is required. Reuse subscription sign-in supported by the CLI. Programs and tools run on the phone; model inference uses cloud services.
+Deploy and run T3 Code inside Android's built-in Linux Terminal (a Debian ARM64 VM), then access it from the same phone's browser. Use agent capabilities and subscription sign-in through the CLIs connected to T3. No Android root or separate T3 app is required. T3 and the CLIs run on the phone; model inference uses cloud services.
 
-This repository supplies only the wireless ADB connection and two phone-loopback endpoints: `3773` for T3 and `1455` for the Codex browser login callback. Terminal's built-in port discovery failed during testing, so one user service maintains the connection and forwarding.
+This repository provides deployment steps for T3 Code on a phone, the same-phone wireless ADB connection, and two phone-loopback endpoints: `3773` for T3 and `1455` for the Codex browser login callback. Terminal's built-in port discovery failed during testing, so one user service maintains the connection and forwarding.
+
+The deployment example uses the tested Codex CLI setup. It also includes Google's official Android CLI / SKILL configuration so an agent in T3 can read and operate that same phone's interface.
 
 ## Install
 
@@ -86,12 +88,12 @@ Uninstall preserves connection settings, upstream tools, accounts, and working d
 
 ## Evidence
 
-The original deployment used a Pixel 9a, GrapheneOS `2026102100` / Android 17, Debian 13 ARM64, T3 `0.1.2`, Codex `0.164.0`, and Android CLI `1.1.16717390`. Codex login, T3 browser pairing, same-phone ADB, and Android CLI screenshots succeeded. After a VM restart, services recovered and the phone's T3 endpoint returned HTTP 200. In subsequent hands-on testing, the user confirmed that this setup can control the phone to complete most tasks.
+The original deployment used a Pixel 9a, GrapheneOS `2026102100` / Android 17, Debian 13 ARM64, T3 `0.1.2`, Codex `0.164.0`, and Android CLI `1.1.16717390`. Codex login, T3 browser pairing, same-phone ADB, and Android CLI screenshots succeeded. After a VM restart, services recovered and the phone's T3 endpoint returned HTTP 200. In subsequent hands-on testing, the user confirmed that T3 with Android CLI can control the phone to complete most tasks.
 
 ## Limitations
 
 - Device testing covers the environment above and Codex. Other devices, ROMs, and providers such as Claude Code / OpenCode require separate verification.
-- The main current issue is the system killing Terminal in the background, interrupting continued agent operation. Reliability during screen lock, extended background operation, and recovery after network changes still needs further verification.
+- The main current issue is the system killing Terminal in the background, interrupting continued T3 and CLI operation. Reliability during screen lock, extended background operation, and recovery after network changes still needs further verification.
 - This repository's minimal installer has not been tested in a fresh phone VM. Neither local automated checks nor remote CI can replace device acceptance.
 - Services run only while the VM runs. Update the wireless debugging connection port with `connect` when it changes.
 - Do not enable `3773` / `1455` simultaneously in Terminal's Port control. The scheme depends on adbd supporting loopback listeners; verify the phone's listening addresses on other versions.
@@ -109,4 +111,4 @@ python3 scripts/check_public.py
 python3 scripts/package.py
 ```
 
-Packaging produces the source-only `dist/android-local-agent-v0.1.0.zip` and SHA-256 checksums. This repository's code and documentation use [MIT](LICENSE). Third-party tools and official skills are installed from upstream and retain their own licenses and service terms.
+Packaging produces the source-only `dist/t3-code-on-android-as-an-agent-v0.1.0.zip` and SHA-256 checksums. This repository's code and documentation use [MIT](LICENSE). Third-party tools and official skills are installed from upstream and retain their own licenses and service terms.
