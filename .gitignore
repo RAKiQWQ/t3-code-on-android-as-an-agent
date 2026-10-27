@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.coverage
+dist/
+runtime/
+artifacts/
+logs/
+.env
+auth.json
+*.pem
+*.key
+*.log
+.DS_Store
